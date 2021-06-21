@@ -1,19 +1,48 @@
 # Tabi
 
-To start your Phoenix server:
+A practice chat application using phoenix, react, and postgres to be deployed through cloud platforms.
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Start Phoenix endpoint with `mix phx.server`
+## Tech stack
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+- Elixir
+- Phoenix
+- React
+- Postgres
+- Nginx
+- Docker
+- Docker Compose
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+## Start the application
 
-## Learn more
+### Create `.env` in root directory
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+```
+APP_PORT=4000
+APP_HOSTNAME=localhost
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_HOST=database
+SECRET_KEY_BASE=Y0uRvErYsecr3TANDL0ngStr1ng
+DOCKER_WEB_PORT_FORWARD=4000
+```
+
+### Create `.env.local` in /app directory
+
+```
+VITE_API_URL=http://localhost:4000/api
+VITE_WS_URL=ws://localhost:4000/socket
+```
+
+_Replace env values to your liking_
+
+### Execute the command to start the app
+
+```
+docker-compose up --build
+```
+
+### Execute the command to stop the app
+
+```
+docker-compose down -v
+```
