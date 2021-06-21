@@ -37,6 +37,18 @@ defmodule Tabi.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_user_by_nickname(%{"nickname" => nickname}) do
+    case nickname == "" do
+      true ->
+        :error
+
+      false ->
+        User
+        |> where(nickname: ^nickname)
+        |> Repo.one()
+    end
+  end
+
   @doc """
   Creates a user.
 
@@ -50,9 +62,18 @@ defmodule Tabi.Accounts do
 
   """
   def create_user(attrs \\ %{}) do
-    %User{}
-    |> User.changeset(attrs)
-    |> Repo.insert()
+    case get_user_by_nickname(attrs) do
+      nil ->
+        %User{}
+        |> User.changeset(attrs)
+        |> Repo.insert()
+
+      :error ->
+        {:error, :not_found}
+
+      user ->
+        {:ok, user}
+    end
   end
 
   @doc """
