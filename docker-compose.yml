@@ -1,0 +1,45 @@
+version: "3"
+services:
+  database:
+    image: postgres:13.3-alpine
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: tabi_prod
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+  web:
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    env_file: ".env"
+    ports:
+      - "${DOCKER_WEB_PORT_FORWARD:-127.0.0.1:4000}:4000"
+    environment:
+      APP_PORT: ${APP_PORT}
+      APP_HOSTNAME: ${APP_HOSTNAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+    depends_on:
+      - database
+  client:
+    build:
+      dockerfile: Dockerfile
+      context: ./app
+    depends_on:
+      - web
+  nginx:
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - web
+      - client
+
+volumes:
+  postgres_data:
