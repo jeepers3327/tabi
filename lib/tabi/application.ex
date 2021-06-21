@@ -14,7 +14,8 @@ defmodule Tabi.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Tabi.PubSub},
       # Start the Endpoint (http/https)
-      TabiWeb.Endpoint
+      TabiWeb.Endpoint,
+      TabiWeb.Presence
       # Start a worker by calling: Tabi.Worker.start_link(arg)
       # {Tabi.Worker, arg}
     ]

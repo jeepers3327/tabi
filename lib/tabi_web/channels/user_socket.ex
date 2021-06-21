@@ -2,7 +2,7 @@ defmodule TabiWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", TabiWeb.RoomChannel
+  channel "room:lobby", TabiWeb.RoomChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
