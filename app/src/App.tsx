@@ -1,45 +1,21 @@
-import React, { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import React from "react";
+import { ChakraProvider } from "@chakra-ui/react";
+import SplashPage from "./pages/Splash";
+import LobbyPage from "./pages/Lobby";
+import { Route, Switch } from "react-router-dom";
+import { SocketProvider } from "./contexts/SocketContext";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  )
+    <ChakraProvider>
+      <SocketProvider wsUrl={import.meta.env.VITE_WS_URL}>
+        <Switch>
+          <Route path="/" exact component={SplashPage} />
+          <Route path="/chat" exact component={LobbyPage} />
+        </Switch>
+      </SocketProvider>
+    </ChakraProvider>
+  );
 }
 
-export default App
+export default App;
