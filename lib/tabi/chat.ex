@@ -18,7 +18,7 @@ defmodule Tabi.Chat do
 
   """
   def list_messages do
-    Repo.all(Message)
+    Repo.all(Message) |> Repo.preload([:user])
   end
 
   @doc """
