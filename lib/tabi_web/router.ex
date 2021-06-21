@@ -3,10 +3,24 @@ defmodule TabiWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug TabiWeb.Plugs.VerifyHeader
+  end
+
+  pipeline :protected do
+    plug TabiWeb.Plugs.EnsureAuthenticated, handler: TabiWeb.Handlers.ErrorHandler
   end
 
   scope "/api", TabiWeb do
     pipe_through :api
+
+    resources "/registration", RegistrationController, only: [:create]
+    resources "/session", SessionController, singleton: true, only: [:delete]
+  end
+
+  scope "/api", TabiWeb do
+    pipe_through [:api, :protected]
+
+    resources "/session", SessionController, only: [:index]
   end
 
   # Enables LiveDashboard only for development
