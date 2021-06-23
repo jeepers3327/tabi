@@ -31,15 +31,19 @@ services:
     depends_on:
       - web
   nginx:
-    build:
-      dockerfile: Dockerfile
-      context: ./nginx
+    image: jonasal/nginx-certbot:latest
+    restart: unless-stopped
+    env_file: ".env"
     ports:
       - "80:80"
       - "443:443"
+    volumes:
+      - nginx_secrets:/etc/letsencrypt
+      - ./user_conf.d:/etc/nginx/user_conf.d
     depends_on:
       - web
       - client
 
 volumes:
   postgres_data:
+  nginx_secrets:
